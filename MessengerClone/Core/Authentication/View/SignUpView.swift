@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct SignUpView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var fullName = ""
+    @StateObject var viewModel = SignUpViewModel()
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         VStack{
@@ -22,24 +20,26 @@ struct SignUpView: View {
                 .frame(width: 150,height: 150)
             // Textfields
             VStack(spacing: 12){
-                TextField("Enter your fullname", text: $fullName)
+                TextField("Enter your fullname", text: $viewModel.fullname)
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .padding(.horizontal, 24)
-                TextField("Enter your email", text: $email)
+                TextField("Enter your email", text: $viewModel.email)
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .padding(.horizontal, 24)
-                SecureField("Enter your password", text: $password)
+                    .autocapitalization(.none)
+                SecureField("Enter your password", text: $viewModel.password)
                     .padding(12)
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                     .padding(.horizontal, 24)
+                    .autocapitalization(.none)
             }
             Button{
-                print("Sign Up")
+                Task { try await viewModel.createUser() }
             } label: {
                 Text("Sign Up")
                     .fontWeight(.semibold)

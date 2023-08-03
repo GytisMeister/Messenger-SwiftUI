@@ -9,7 +9,12 @@ import SwiftUI
 
 struct InboxView: View {
     @State private var showNewMessageView = false
-    @State private var user = User.Mock_User
+    @StateObject var viewModel = InboxViewModel()
+    
+    private var user: User? {
+        return viewModel.currentUser
+    }
+    
     var body: some View {
         NavigationStack{
             ScrollView{
@@ -35,9 +40,9 @@ struct InboxView: View {
                         NavigationLink(value: user) {
                             CircularProfileImageView(user: user, size: .xSmall)
                         }
-                        Text("Chats")
-                            .font(.title)
-                            .fontWeight(.semibold)
+//                        Text("Chats")
+//                            .font(.title)
+//                            .fontWeight(.semibold)
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
